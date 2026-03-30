@@ -1,1 +1,17 @@
-[]
+[
+  {
+    "username": "faisal",
+    "name": "فيصل العريبي",
+    "password": "f1d521e4ab4288ad8d67c530ef5d5cd1c1dcec6bd2a5f3a18bb334ccc6f1abba",
+    "role": "admin"
+  },
+  {
+    "username": "teacher1",
+    "name": "معلم 1",
+    "password": "0cbc053aa1d7bd1f364de57ccddacae5b4323efe12dadde99be0fe2775d27633",
+    "role": "teacher"
+  },
+  {
+    "username": "teacher2",
+    "name": "معلم 2",
+    "password": "22ec4619d130da4735833101617533214beae6c058248015899dfb68
