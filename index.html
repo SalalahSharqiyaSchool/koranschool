@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html dir="rtl" lang="ar">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>نظام حضور مدرسة القرآن الكريم</title>
+  <style>
+    body { font-family: 'Arial', sans-serif; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); height: 100vh; display: flex; align-items: center; justify-content: center; margin: 0; }
+    .login-container { background: rgba(255,255,255,0.95); padding: 3rem 2rem; border-radius: 20px; box-shadow: 0 20px 40px rgba(0,0,0,0.2); text-align: center; max-width: 400px; width: 90%; }
+    h1 { color: #333; margin-bottom: 2rem; font-size: 1.8rem; }
+    input { width: 100%; padding: 1rem; margin: 1rem 0; border: 2px solid #ddd; border-radius: 10px; font-size: 1rem; box-sizing: border-box; }
+    input:focus { outline: none; border-color: #4CAF50; }
+    button { width: 100%; padding: 1rem; background: linear-gradient(45deg, #4CAF50, #45a049); color: white; border: none; border-radius: 10px; font-size: 1.1rem; cursor: pointer; transition: transform 0.2s; }
+    button:hover { transform: translateY(-2px); }
+    .role-links { margin-top: 1.5rem; font-size: 0.9rem; }
+    .role-links a { color: #667eea; text-decoration: none; }
+  </style>
+</head>
+<body>
+  <div class="login-container">
+    <img src="/public/logo.png" alt="شعار المدرسة" style="width: 100px; height: 100px; margin-bottom: 1rem;">
+    <h1>نظام حضور مدرسة القرآن الكريم</h1>
+    <form id="login-form">
+      <input type="text" id="username" placeholder="اسم المستخدم" required>
+      <input type="password" id="password" placeholder="كلمة السر" required>
+      <button type="submit">دخول</button>
+    </form>
+    <div class="role-links">
+      <p>للمعلم: <a href="/pages/teacher/select-group.html">ابدأ تسجيل الحضور</a></p>
+      <p>للإداري: <a href="/pages/admin/dashboard.html">لوحة التحكم</a></p>
+    </div>
+  </div>
+  <script>
+    document.getElementById('login-form').addEventListener('submit', (e) => {
+      e.preventDefault();
+      const user = document.getElementById('username').value;
+      const pass = document.getElementById('password').value;
+      if (user === 'teacher' && pass === '123') {
+        window.location.href = '/pages/teacher/select-group.html';
+      } else if (user === 'admin' && pass === 'admin123') {
+        window.location.href = '/pages/admin/dashboard.html';
+      } else {
+        alert('بيانات خاطئة!');
+      }
+    });
+  </script>
+</body>
+</html>
+

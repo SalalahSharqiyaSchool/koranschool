@@ -1,0 +1,22 @@
+{
+  "name": "quran-school-attendance",
+  "version": "1.0.0",
+  "description": "نظام حضور مدرسة القرآن الكريم باستخدام GitHub كقاعدة بيانات",
+  "main": "index.js",
+  "scripts": {
+    "dev": "vercel dev",
+    "build": "vercel build",
+    "deploy": "vercel --prod"
+  },
+  "dependencies": {
+    "@octokit/rest": "^20.0.0",
+    "octokit": "^3.2.0"
+  },
+  "devDependencies": {
+    "vercel": "^32.0.0"
+  },
+  "engines": {
+    "node": ">=18"
+  }
+}
+

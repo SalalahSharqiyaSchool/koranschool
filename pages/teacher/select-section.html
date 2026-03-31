@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html dir="rtl" lang="ar">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>اختيار الشعبة</title>
+  <style>
+    body { font-family: Arial, sans-serif; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); min-height: 100vh; display: flex; align-items: center; justify-content: center; margin: 0; padding: 1rem; }
+    .container { background: white; padding: 2rem; border-radius: 10px; box-shadow: 0 10px 30px rgba(0,0,0,0.3); max-width: 500px; width: 100%; max-height: 80vh; overflow-y: auto; }
+    .section-list { list-style: none; padding: 0; }
+    .section-item { background: #f8f9fa; margin: 0.5rem 0; padding: 1rem; border-radius: 5px; cursor: pointer; transition: background 0.3s; border-right: 4px solid #4CAF50; }
+    .section-item:hover { background: #e3f2fd; }
+    button.back { background: #f44336; color: white; border: none; padding: 0.8rem 1.5rem; border-radius: 5px; cursor: pointer; margin-top: 1rem; width: 100%; }
+    h1 { text-align: center; color: #333; }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>الشعب - <span id="group-display"></span></h1>
+    <ul id="sections-list" class="section-list"></ul>
+    <button class="back" onclick="window.history.back()">رجوع</button>
+  </div>
+  <script>
+    const params = new URLSearchParams(window.location.search);
+    const group = params.get('group');
+    document.getElementById('group-display').textContent = group === 'A' ? 'المجموعة أ' : 'المجموعة ب';
+    // Static list for now, integrate API later
+    const sections = Array.from({length: 11}, (_, i) => `sec_${(i+1).toString().padStart(2, '0')}`);
+    const list = document.getElementById('sections-list');
+    sections.forEach(secNum => {
+      const li = document.createElement('li');
+      li.className = 'section-item';
+      li.textContent = secNum;
+      li.onclick = () => window.location.href = `attendance.html?group=${group}&sec=${secNum}`;
+      list.appendChild(li);
+    });
+  </script>
+</body>
+</html>
+

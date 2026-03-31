@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html dir="rtl" lang="ar">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>التقارير والغياب</title>
+  <style>
+    body { font-family: Arial; background: linear-gradient(135deg, #ff9a9e 0%, #fecfef 100%); min-height: 100vh; margin: 0; padding: 1rem; }
+    .container { max-width: 1200px; margin: 0 auto; background: white; padding: 2rem; border-radius: 10px; box-shadow: 0 10px 30px rgba(0,0,0,0.3); }
+    table { width: 100%; border-collapse: collapse; margin-top: 2rem; }
+    th, td { padding: 1rem; border: 1px solid #ddd; text-align: right; }
+    th { background: #2196F3; color: white; }
+    .absent { background: #ffebee; }
+    input[type="date"] { padding: 0.8rem; font-size: 1rem; border: 1px solid #ddd; border-radius: 3px; margin-bottom: 1rem; }
+    button { background: #FF9800; color: white; border: none; padding: 1rem 2rem; border-radius: 5px; cursor: pointer; }
+    h1 { text-align: center; }
+    .back { background: #f44336; color: white; border: none; padding: 1rem; border-radius: 5px; cursor: pointer; width: 100%; margin-top: 2rem; }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>تقارير الحضور والغياب</h1>
+    <input type="date" id="date-filter" onchange="loadReports()" value="">
+    <button onclick="loadReports()">عرض التقرير</button>
+    <table id="reports-table">
+      <thead>
+        <tr>
+          <th>التاريخ</th>
+          <th>المجموعة</th>
+          <th>الشعبة</th>
+          <th>الحاضر</th>
+          <th>الغائب</th>
+          <th>نسبة الحضور</th>
+        </tr>
+      </thead>
+      <tbody id="table-body">
+        <tr><td colspan="6">اختر تاريخاً أو اضغط عرض</td></tr>
+      </tbody>
+    </table>
+    <button class="back" onclick="window.history.back()">رجوع</button>
+  </div>
+  <script>
+    function loadReports() {
+      const date = document.getElementById('date-filter').value || new Date().toISOString().slice(0,10);
+      const tbody = document.getElementById('table-body');
+      tbody.innerHTML = `
+        <tr>
+          <td>${date}</td>
+          <td>أ</td>
+          <td>01</td>
+          <td>25</td>
+          <td>2</td>
+          <td>93%</td>
+        </tr>
+        <tr class="absent">
+          <td>${date}</td>
+          <td>ب</td>
+          <td>02</td>
+          <td>20</td>
+          <td>5</td>
+          <td>80%</td>
+        </tr>
+      `;
+      // Real: fetch /database/logs/${date}* .json from GitHub API
+    }
+  </script>
+</body>
+</html>
+

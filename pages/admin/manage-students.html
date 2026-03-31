@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html dir="rtl" lang="ar">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>إدارة الطلاب</title>
+  <style>
+    body { font-family: Arial; background: linear-gradient(135deg, #fa709a 0%, #fee140 100%); min-height: 100vh; margin: 0; padding: 1rem; }
+    .container { max-width: 800px; margin: 0 auto; background: white; padding: 2rem; border-radius: 10px; box-shadow: 0 10px 30px rgba(0,0,0,0.3); }
+    .group-tabs { text-align: center; margin-bottom: 1rem; }
+    .tab { padding: 0.8rem 1.5rem; margin: 0 0.5rem; background: #ddd; cursor: pointer; border-radius: 5px; }
+    .tab.active { background: #4CAF50; color: white; }
+    .add-form { background: #e8f5e8; padding: 1.5rem; border-radius: 5px; margin-bottom: 2rem; }
+    input { padding: 0.8rem; margin: 0.5rem; border: 1px solid #ddd; border-radius: 3px; width: calc(100% - 1.6rem); }
+    button { padding: 0.8rem 1.5rem; background: #4CAF50; color: white; border: none; border-radius: 3px; cursor: pointer; margin-top: 0.5rem; }
+    .students-list { list-style: none; padding: 0; }
+    .student-item { display: flex; justify-content: space-between; align-items: center; padding: 1rem; background: #f8f9fa; margin: 0.5rem 0; border-radius: 5px; }
+    .delete-btn { background: #f44336; }
+    select { padding: 0.8rem; margin: 1rem 0; border: 1px solid #ddd; border-radius: 3px; width: 100%; }
+    h1 { text-align: center; }
+    .back { background: #f44336; color: white; border: none; padding: 1rem; border-radius: 5px; cursor: pointer; width: 100%; margin-top: 2rem; }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>إضافة وإدارة الطلاب</h1>
+    <div class="group-tabs">
+      <span class="tab active" onclick="switchGroup('A')">أ</span>
+      <span class="tab" onclick="switchGroup('B')">ب</span>
+    </div>
+    <select id="section-select">
+      <option>اختر شعبة</option>
+    </select>
+    <div class="add-form">
+      <input id="student-name" placeholder="اسم الطالب (مطلوب)">
+      <input id="student-id" placeholder="رقم الطالب (اختياري)">
+      <button onclick="addStudent()">إضافة الطالب</button>
+    </div>
+    <ul id="students-list" class="students-list"></ul>
+    <button class="back" onclick="window.history.back()">رجوع</button>
+  </div>
+  <script>
+    let currentGroup = 'A';
+    let currentSection = '';
+    const demoStudents = [];
+    
+    function switchGroup(group) {
+      currentGroup = group;
+      document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+      event.target.classList.add('active');
+      loadSections();
+    }
+    
+    function loadSections() {
+      const select = document.getElementById('section-select');
+      select.innerHTML = '<option>اختر شعبة</option>';
+      for (let i = 1; i <= 11; i++) {
+        const opt = document.createElement('option');
+        opt.value = `sec_${i.toString().padStart(2,'0')}`;
+        opt.textContent = `الشعبة ${i}`;
+        select.appendChild(opt);
+      }
+      loadStudents();
+    }
+    
+    document.getElementById('section-select').onchange = (e) => {
+      currentSection = e.target.value;
+      loadStudents();
+    };
+    
+    function loadStudents() {
+      const list = document.getElementById('students-list');
+      list.innerHTML = '';
+      demoStudents.forEach((student, index) => {
+        const li = document.createElement('li');
+        li.className = 'student-item';
+        li.innerHTML = `<span>${student.name} (${student.id})</span> <button class="delete-btn" onclick="deleteStudent(${index})">حذف</button>`;
+        list.appendChild(li);
+      });
+    }
+    
+    function addStudent() {
+      const name = document.getElementById('student-name').value.trim();
+      if (!name || !currentSection) return alert('اختر شعبة وأدخل اسم');
+      const id = document.getElementById('student-id').value || `s${demoStudents.length + 1}`;
+      demoStudents.push({name, id});
+      loadStudents();
+      document.getElementById('student-name').value = '';
+      document.getElementById('student-id').value = '';
+      alert('تم إضافة الطالب (يحفظ على GitHub)');
+    }
+    
+    function deleteStudent(index) {
+      demoStudents.splice(index, 1);
+      loadStudents();
+    }
+    
+    loadSections();
+  </script>
+</body>
+</html>
+

@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html dir="rtl" lang="ar">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>اختيار المجموعة - مدرسة القرآن</title>
+  <style>
+    body { font-family: 'Arial', sans-serif; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); min-height: 100vh; display: flex; align-items: center; justify-content: center; margin: 0; }
+    .container { background: white; padding: 2rem; border-radius: 10px; box-shadow: 0 10px 30px rgba(0,0,0,0.3); text-align: center; }
+    button { background: #4CAF50; color: white; border: none; padding: 1rem 2rem; font-size: 1.2rem; border-radius: 5px; cursor: pointer; margin: 1rem; transition: background 0.3s; }
+    button:hover { background: #45a049; }
+    .back { background: #f44336; }
+    .back:hover { background: #da190b; }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>اختر المجموعة</h1>
+    <img src="/public/logo.png" alt="logo" style="width: 100px;">
+    <button onclick="window.location.href='select-section.html?group=A'">المجموعة أ</button>
+    <button onclick="window.location.href='select-section.html?group=B'">المجموعة ب</button>
+    <button class="back" onclick="window.history.back()">رجوع</button>
+  </div>
+</body>
+</html>
+

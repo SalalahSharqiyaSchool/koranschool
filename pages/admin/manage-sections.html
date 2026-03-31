@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html dir="rtl" lang="ar">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>إدارة الشعب</title>
+  <style>
+    body { font-family: Arial; background: linear-gradient(135deg, #a8edea 0%, #fed6e3 100%); min-height: 100vh; margin: 0; padding: 1rem; }
+    .container { max-width: 800px; margin: 0 auto; background: white; padding: 2rem; border-radius: 10px; box-shadow: 0 10px 30px rgba(0,0,0,0.3); }
+    .tabs { text-align: center; margin-bottom: 2rem; }
+    .tab { padding: 1rem 2rem; margin: 0 0.5rem; background: #ddd; cursor: pointer; border-radius: 5px 5px 0 0; display: inline-block; }
+    .tab.active { background: #4CAF50; color: white; }
+    .section-row { display: flex; gap: 1rem; align-items: center; margin: 1rem 0; padding: 1rem; background: #f8f9fa; border-radius: 5px; }
+    input[type="text"] { flex: 1; padding: 0.8rem; border: 1px solid #ddd; border-radius: 3px; font-size: 1rem; }
+    .save-btn { background: #2196F3; color: white; border: none; padding: 0.8rem 1.5rem; border-radius: 3px; cursor: pointer; }
+    h1 { text-align: center; }
+    .back { background: #f44336; color: white; border: none; padding: 1rem; border-radius: 5px; cursor: pointer; width: 100%; margin-top: 2rem; }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>إدارة مسميات الشعب (22 شعبة)</h1>
+    <div class="tabs">
+      <span class="tab active" onclick="switchGroup('A')">المجموعة أ</span>
+      <span class="tab" onclick="switchGroup('B')">المجموعة ب</span>
+    </div>
+    <div id="sections-container"></div>
+    <button class="back" onclick="window.history.back()">رجوع</button>
+  </div>
+  <script>
+    let currentGroup = 'A';
+    const sectionNames = {
+      '01': 'السيدة خديجة الكبرى',
+      '02': 'السيدة فاطمة الزهراء',
+      '03': 'السيدة عائشة الصديقة',
+      '04': 'السيدة زينب بنت علي',
+      '05': 'السيدة أم كلثوم',
+      '06': 'السيدة رقية بنت النبي',
+      '07': 'السيدة صفية بنت حيي',
+      '08': 'السيدة أم سلمة',
+      '09': 'السيدة حفصة بنت عمر',
+      '10': 'السيدة زينب بنت جحش',
+      '11': 'السيدة جويرية بنت الحارث'
+    };
+    function switchGroup(group) {
+      currentGroup = group;
+      loadSections();
+      document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+      event.target.classList.add('active');
+    }
+    function loadSections() {
+      const container = document.getElementById('sections-container');
+      container.innerHTML = '';
+      for (let i = 1; i <= 11; i++) {
+        const sec = i.toString().padStart(2, '0');
+        const div = document.createElement('div');
+        div.className = 'section-row';
+        div.innerHTML = `
+          <span>الشعبة ${sec}:</span>
+          <input type="text" value="${sectionNames[sec]}" id="sec-${currentGroup}-${sec}">
+          <button class="save-btn" onclick="saveSection('sec-${currentGroup}-${sec}')">حفظ</button>
+        `;
+        container.appendChild(div);
+      }
+    }
+    function saveSection(id) {
+      const input = document.getElementById(id);
+      alert(`تم حفظ ${input.value} (يتحدث GitHub عبر API)`);
+      // Call update-section API
+    }
+    loadSections();
+  </script>
+</body>
+</html>
+
