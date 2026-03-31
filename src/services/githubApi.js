@@ -1,13 +1,11 @@
-// GitHub API Service
-// يتعامل مع قراءة وكتابة الملفات على GitHub
-
 const GITHUB_API = 'https://api.github.com'
 const REPO_OWNER = 'SalalahSharqiyaSchool'
 const REPO_NAME = 'koranschool'
 const DATA_BRANCH = 'main'
 
+// التوكن: أولاً من Vercel env، ثم من localStorage (للمدير)
 function getToken() {
-  return localStorage.getItem('gh_token') || ''
+  return import.meta.env.VITE_GITHUB_TOKEN || localStorage.getItem('gh_token') || ''
 }
 
 function headers() {
@@ -18,7 +16,6 @@ function headers() {
   }
 }
 
-// قراءة ملف من GitHub
 export async function readFile(path) {
   try {
     const res = await fetch(
@@ -36,7 +33,6 @@ export async function readFile(path) {
   }
 }
 
-// كتابة ملف على GitHub
 export async function writeFile(path, content, sha = null, message = 'تحديث البيانات') {
   const body = {
     message,
@@ -44,7 +40,6 @@ export async function writeFile(path, content, sha = null, message = 'تحديث
     branch: DATA_BRANCH,
   }
   if (sha) body.sha = sha
-
   const res = await fetch(
     `${GITHUB_API}/repos/${REPO_OWNER}/${REPO_NAME}/contents/${path}`,
     { method: 'PUT', headers: headers(), body: JSON.stringify(body) }
@@ -56,44 +51,30 @@ export async function writeFile(path, content, sha = null, message = 'تحديث
   return await res.json()
 }
 
-// حذف ملف من GitHub
-export async function deleteFile(path, sha, message = 'حذف ملف') {
-  const res = await fetch(
-    `${GITHUB_API}/repos/${REPO_OWNER}/${REPO_NAME}/contents/${path}`,
-    {
-      method: 'DELETE',
-      headers: headers(),
-      body: JSON.stringify({ message, sha, branch: DATA_BRANCH })
-    }
-  )
-  if (!res.ok) throw new Error('فشل في حذف الملف')
-}
-
-// قائمة الملفات في مجلد
 export async function listFiles(path) {
   try {
     const res = await fetch(
       `${GITHUB_API}/repos/${REPO_OWNER}/${REPO_NAME}/contents/${path}?ref=${DATA_BRANCH}`,
       { headers: headers() }
     )
-    if (res.status === 404) return []
     if (!res.ok) return []
     const data = await res.json()
     return Array.isArray(data) ? data : []
-  } catch {
-    return []
-  }
+  } catch { return [] }
 }
 
-// مسار ملف الطلاب
+function groupKey(group) {
+  if (group === 'أ' || group === 'a') return 'a'
+  if (group === 'ب' || group === 'b') return 'b'
+  return group.toLowerCase()
+}
+
 export function studentsPath(group, section) {
-  return `data/students/${group}-${section}.json`
+  return `data/students/${groupKey(group)}-${section}.json`
 }
 
-// مسار ملف الغياب
 export function attendancePath(group, section) {
-  return `data/attendance/${group}-${section}.json`
+  return `data/attendance/${groupKey(group)}-${section}.json`
 }
 
-// مسار ملف المعلمين
 export const teachersPath = 'data/teachers.json'

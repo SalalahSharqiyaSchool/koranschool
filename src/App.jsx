@@ -1,17 +1,37 @@
 import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom'
 import { AuthProvider, useAuth } from './context/AuthContext'
 import Login from './pages/Login'
-import Dashboard from './pages/Dashboard'
-import Attendance from './pages/Attendance'
-import Reports from './pages/Reports'
-import Students from './pages/Students'
 import Setup from './pages/Setup'
-import Layout from './components/Layout'
+import TeacherLayout from './pages/teacher/TeacherLayout'
+import TeacherAttendance from './pages/teacher/TeacherAttendance'
+import AdminLayout from './pages/admin/AdminLayout'
+import AdminDashboard from './pages/admin/AdminDashboard'
+import AdminAttendance from './pages/admin/AdminAttendance'
+import AdminReports from './pages/admin/AdminReports'
+import AdminStudents from './pages/admin/AdminStudents'
+import AdminTeachers from './pages/admin/AdminTeachers'
 
-function PrivateRoute({ children }) {
+function Spinner() {
+  return (
+    <div className="flex items-center justify-center h-screen bg-gray-50">
+      <div className="animate-spin w-10 h-10 border-4 border-blue-500 border-t-transparent rounded-full"/>
+    </div>
+  )
+}
+
+function RoleRoute({ children, role }) {
   const { user, loading } = useAuth()
-  if (loading) return <div className="flex items-center justify-center h-screen"><div className="animate-spin w-8 h-8 border-4 border-primary-500 border-t-transparent rounded-full"/></div>
-  return user ? children : <Navigate to="/login" replace />
+  if (loading) return <Spinner />
+  if (!user) return <Navigate to="/login" replace />
+  if (role && user.role !== role) return <Navigate to={user.role === 'admin' ? '/admin' : '/teacher'} replace />
+  return children
+}
+
+function HomeRedirect() {
+  const { user, loading } = useAuth()
+  if (loading) return <Spinner />
+  if (!user) return <Navigate to="/login" replace />
+  return <Navigate to={user.role === 'admin' ? '/admin' : '/teacher'} replace />
 }
 
 export default function App() {
@@ -19,13 +39,22 @@ export default function App() {
     <AuthProvider>
       <BrowserRouter>
         <Routes>
+          <Route path="/" element={<HomeRedirect />} />
           <Route path="/login" element={<Login />} />
           <Route path="/setup" element={<Setup />} />
-          <Route path="/" element={<PrivateRoute><Layout /></PrivateRoute>}>
-            <Route index element={<Dashboard />} />
-            <Route path="attendance" element={<Attendance />} />
-            <Route path="reports" element={<Reports />} />
-            <Route path="students" element={<Students />} />
+
+          {/* Teacher routes */}
+          <Route path="/teacher" element={<RoleRoute role="teacher"><TeacherLayout /></RoleRoute>}>
+            <Route index element={<TeacherAttendance />} />
+          </Route>
+
+          {/* Admin routes */}
+          <Route path="/admin" element={<RoleRoute role="admin"><AdminLayout /></RoleRoute>}>
+            <Route index element={<AdminDashboard />} />
+            <Route path="attendance" element={<AdminAttendance />} />
+            <Route path="reports" element={<AdminReports />} />
+            <Route path="students" element={<AdminStudents />} />
+            <Route path="teachers" element={<AdminTeachers />} />
           </Route>
         </Routes>
       </BrowserRouter>

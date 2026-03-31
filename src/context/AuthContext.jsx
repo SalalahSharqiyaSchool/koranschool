@@ -8,17 +8,12 @@ export function AuthProvider({ children }) {
   const [loading, setLoading] = useState(true)
 
   useEffect(() => {
-    const session = getSession()
-    setUser(session)
+    setUser(getSession())
     setLoading(false)
   }, [])
 
   const login = (userData) => setUser(userData)
-
-  const logout = () => {
-    authLogout()
-    setUser(null)
-  }
+  const logout = () => { authLogout(); setUser(null) }
 
   return (
     <AuthContext.Provider value={{ user, login, logout, loading }}>
@@ -27,6 +22,4 @@ export function AuthProvider({ children }) {
   )
 }
 
-export function useAuth() {
-  return useContext(AuthContext)
-}
+export function useAuth() { return useContext(AuthContext) }
